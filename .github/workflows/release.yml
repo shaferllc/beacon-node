@@ -1,0 +1,35 @@
+# Publishes @beacon-status/node to npm when a v* tag is pushed.
+#
+# GitHub only runs workflows from the repository root, so this file is inert inside the
+# Beacon monorepo (sdks/node). It runs once sdks/node is split into its own repository
+# (see .github/workflows/split-packages.yml in the monorepo), or copy it to the monorepo's
+# .github/workflows/ and add `defaults.run.working-directory: sdks/node`.
+#
+# Required secret (not configured yet): NPM_TOKEN — an npm automation token with publish
+# rights on the @beacon-status org.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write # npm provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
+      - run: npm test
+      - name: Check tag matches package.json version
+        run: test "v$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
+      - run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

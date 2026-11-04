@@ -1,0 +1,55 @@
+{
+  "name": "@beacon-status/node",
+  "version": "1.0.0",
+  "description": "Typed client for the Beacon status page REST API, incident ingest, heartbeats and webhook signature verification.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shaferllc/beacon.git",
+    "directory": "sdks/node"
+  },
+  "homepage": "https://usebeacon.pro/docs/sdk-node",
+  "keywords": [
+    "beacon",
+    "status-page",
+    "incidents",
+    "uptime",
+    "heartbeat",
+    "webhooks"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean --target node18",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^3.1.0"
+  }
+}
