@@ -6,15 +6,16 @@ Typed Node.js / TypeScript client for [Beacon](https://usebeacon.pro) status pag
 - ESM and CommonJS builds with bundled type definitions.
 - Cursor pagination iterators, typed errors with `code`, `status` and `retryAfter`.
 
-> **Not yet published to npm.** Until it is, build a tarball from this repository:
+> **Not yet published to npm.** Until it is, install from GitHub (npm can't install from a subdirectory of the monorepo, so use the standalone split repo or a tarball):
 >
 > ```bash
-> git clone https://github.com/shaferllc/beacon.git
-> cd beacon/sdks/node && npm ci && npm pack      # → beacon-status-node-1.0.0.tgz
+> npm install github:shaferllc/beacon-node#v1.0.0   # builds dist/ via the prepare script
+>
+> # or build a tarball yourself
+> git clone https://github.com/shaferllc/beacon-node.git
+> cd beacon-node && npm ci && npm pack              # → beacon-status-node-1.0.0.tgz
 > cd /your/app && npm install /path/to/beacon-status-node-1.0.0.tgz
 > ```
->
-> (`npm install` can't install from a git subdirectory.)
 
 ## Setup
 
