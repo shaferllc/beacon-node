@@ -28,8 +28,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shaferllc/beacon.git",
-    "directory": "sdks/node"
+    "url": "git+https://github.com/shaferllc/beacon-node.git"
   },
   "homepage": "https://usebeacon.pro/docs/sdk-node",
   "keywords": [
