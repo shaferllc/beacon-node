@@ -14,7 +14,18 @@ export type ComponentStatus =
 export type Impact = 'none' | 'minor' | 'major' | 'critical';
 export type IncidentState = 'investigating' | 'identified' | 'monitoring' | 'resolved';
 export type MaintenanceState = 'scheduled' | 'in_progress' | 'completed' | 'cancelled';
-export type MonitorType = 'http' | 'heartbeat' | 'tcp' | 'ping' | 'dns';
+export type MonitorType = 'http' | 'heartbeat' | 'tcp' | 'ping' | 'dns' | 'browser';
+
+/** One step of a browser (scripted) monitor; `fill` values may use {{secret:NAME}}. Timeouts in ms. */
+export type BrowserStep =
+  | { action: 'goto'; url: string }
+  | { action: 'click'; selector: string }
+  | { action: 'fill'; selector: string; value: string }
+  | { action: 'press'; key: string }
+  | { action: 'wait_for_selector'; selector: string; timeout?: number }
+  | { action: 'wait_for_url'; pattern: string; timeout?: number }
+  | { action: 'assert_text'; text: string; selector?: string; timeout?: number }
+  | { action: 'assert_status'; status: number };
 export type DnsRecordType = 'A' | 'AAAA' | 'CNAME' | 'MX' | 'TXT';
 export type Theme = 'dark' | 'light' | 'minimal';
 
@@ -136,11 +147,17 @@ export interface MonitorInput {
   check_window_end?: string | null;
   status_component_id?: Id | null;
   enabled?: boolean;
+  /** Browser monitors (Pro): required for type "browser"; the first step must be goto. */
+  browser_steps?: BrowserStep[] | null;
+  /** Write-only. On update a string sets that secret, null removes it, names left out are kept. */
+  browser_secrets?: Record<string, string | null> | null;
 }
 
-export interface Monitor extends Required<Omit<MonitorInput, 'http_method' | 'keyword_match_type' | 'dns_record_type' | 'expected_status_code'>> {
+export interface Monitor extends Required<Omit<MonitorInput, 'http_method' | 'keyword_match_type' | 'dns_record_type' | 'expected_status_code' | 'browser_secrets'>> {
   id: Id;
   status_page_id: Id;
+  /** Names only; secret values are never returned. */
+  browser_secret_names: string[];
   http_method: string;
   expected_status_code: number | null;
   keyword_match_type: string | null;
