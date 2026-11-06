@@ -235,7 +235,7 @@ export interface MaintenanceInput {
 export interface Subscriber {
   id: Id;
   status_page_id: Id;
-  channel: 'email' | 'slack' | 'teams' | 'discord' | 'webhook' | 'sms';
+  channel: 'email' | 'slack' | 'teams' | 'discord' | 'webhook';
   email: string | null;
   destination: string;
   confirmed: boolean;
